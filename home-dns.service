@@ -5,9 +5,11 @@ Requieres=docker.service
 
 [Service]
 TimeoutStartSec=0
-ExecStartPre=/usr/bin/docker stop home-dns
-ExecStartPre=/usr/bin/docker rm home-dns
+ExecStartPre=-/usr/bin/docker stop home-dns
+ExecStartPre=-/usr/bin/docker rm home-dns
 ExecStart=/usr/bin/docker run --name home-dns -p 53:53 -p 53:53/udp --cap-add=NET_ADMIN -v /home/pirate/rpi-alpine-dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf -v /home/pirate/rpi-alpine-dnsmasq/hosts:/etc/hosts xaviaznar/rpi-dnsmasq
+ExecStop=/usr/bin/docker stop home-dns
+ExecStopPost=/usr/bin/docker rm home-dns
 
 [Install]
 WantedBy=multi-user.target
